@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <!-- ================================================================= -->
+        <!-- Configuration JDBC pour Base de données H2 (In-Memory Engine)      -->
+        <!-- Idéal pour tester immédiatement et analyser les schémas DDL générés -->
+        <!-- ================================================================= -->
+        <property name="connection.driver_class">org.h2.Driver</property>
+        <property name="connection.url">jdbc:h2:mem:tp4_heritage_db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE</property>
+        <property name="connection.username">sa</property>
+        <property name="connection.password"></property>
+        <property name="dialect">org.hibernate.dialect.H2Dialect</property>
+
+        <!-- ================================================================= -->
+        <!-- Configuration optionnelle pour MySQL / MariaDB (XAMPP / Wamp)    -->
+        <!-- ================================================================= -->
+        <!--
+        <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/tp4_heritage?createDatabaseIfNotExist=true&amp;useSSL=false&amp;serverTimezone=UTC</property>
+        <property name="connection.username">root</property>
+        <property name="connection.password"></property>
+        <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+        -->
+
+        <!-- Gestion du pool de connexions interne -->
+        <property name="connection.pool_size">5</property>
+
+        <!-- Affichage et formatage des requêtes SQL (essentiel pour observer les JOIN et UNION) -->
+        <property name="show_sql">true</property>
+        <property name="format_sql">true</property>
+        <property name="use_sql_comments">true</property>
+
+        <!-- Stratégie de génération automatique du schéma DDL -->
+        <property name="hbm2ddl.auto">create-drop</property>
+
+        <!-- ================================================================= -->
+        <!-- Déclaration des classes annotées pour les Stratégies d'Héritage   -->
+        <!-- ================================================================= -->
+        <!-- Stratégie 1 : SINGLE_TABLE (Une seule table pour toute la hiérarchie) -->
+        <mapping class="com.tp.model.singletable.Personne"/>
+        <mapping class="com.tp.model.singletable.Etudiant"/>
+        <mapping class="com.tp.model.singletable.Professeur"/>
+
+        <!-- Stratégie 2 : JOINED (Une table par sous-classe avec clé étrangère) -->
+        <mapping class="com.tp.model.joined.Compte"/>
+        <mapping class="com.tp.model.joined.CompteCourant"/>
+        <mapping class="com.tp.model.joined.CompteEpargne"/>
+
+        <!-- Stratégie 3 : TABLE_PER_CLASS (Une table par classe concrète) -->
+        <mapping class="com.tp.model.tableperclass.Vehicule"/>
+        <mapping class="com.tp.model.tableperclass.Voiture"/>
+        <mapping class="com.tp.model.tableperclass.Moto"/>
+
+        <!-- Cas Particulier : @MappedSuperclass -->
+        <mapping class="com.tp.model.mapped.Departement"/>
+    </session-factory>
+</hibernate-configuration>

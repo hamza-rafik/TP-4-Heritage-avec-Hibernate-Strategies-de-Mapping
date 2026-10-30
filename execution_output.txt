@@ -1,0 +1,1157 @@
+﻿[INFO] Scanning for projects...
+[INFO] 
+[INFO] --------------< com.tp:tp4-heritage-hibernate-strategies >--------------
+[INFO] Building TP 4 : HΘritage avec Hibernate - StratΘgies de Mapping 1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- exec:3.1.1:java (default-cli) @ tp4-heritage-hibernate-strategies ---
+************************************************************************************************
+*                                                                                              *
+*   TP 4 : HΘritage avec Hibernate - StratΘgies de Mapping                                     *
+*   Auteur      : Hamza Rafik                                                                  *
+*   Framework   : Hibernate ORM 6.4 | Jakarta Persistence API (JPA) | Base H2 In-Memory        *
+*   StratΘgies  : 1. SINGLE_TABLE  | 2. JOINED  | 3. TABLE_PER_CLASS  | 4. @MappedSuperclass   *
+*                                                                                              *
+************************************************************************************************
+
+==========================================================================================
+>>> PARTIE 1 : STRAT╔GIE SINGLE_TABLE (Une seule table avec colonne discriminante)
+    Table physique : 'personnes_single_table' | Colonne discriminante : 'type_personne'
+==========================================================================================
+23:53:43.914 [com.tp.Main.main()] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+23:53:44.279 [com.tp.Main.main()] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+23:53:44.441 [com.tp.Main.main()] WARN  o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+23:53:44.795 [com.tp.Main.main()] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+23:53:45.203 [com.tp.Main.main()] INFO  o.h.id.enhanced.TableGenerator - HHH000398: Explicit segment value for id generator [id_gen_vehicule.gen_name] suggested; using default [Vehicule]
+23:53:46.802 [com.tp.Main.main()] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+23:53:46.816 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    drop table if exists comptes_courants cascade 
+Hibernate: 
+    drop table if exists comptes_courants cascade 
+23:53:46.816 [com.tp.Main.main()] INFO  o.hibernate.orm.connections.access - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@7a7bef7e] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+23:53:46.816 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    drop table if exists comptes_epargnes cascade 
+Hibernate: 
+    drop table if exists comptes_epargnes cascade 
+23:53:46.816 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    drop table if exists comptes_joined cascade 
+Hibernate: 
+    drop table if exists comptes_joined cascade 
+23:53:46.831 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    drop table if exists departements cascade 
+Hibernate: 
+    drop table if exists departements cascade 
+23:53:46.831 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    drop table if exists id_gen_vehicule cascade 
+Hibernate: 
+    drop table if exists id_gen_vehicule cascade 
+23:53:46.831 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    drop table if exists motos_table_per_class cascade 
+Hibernate: 
+    drop table if exists motos_table_per_class cascade 
+23:53:46.831 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    drop table if exists personnes_single_table cascade 
+Hibernate: 
+    drop table if exists personnes_single_table cascade 
+23:53:46.833 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    drop table if exists voitures_table_per_class cascade 
+Hibernate: 
+    drop table if exists voitures_table_per_class cascade 
+23:53:46.839 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    create table comptes_courants (
+        decouvert_autorise float(53) not null,
+        frais_tenue_compte float(53) not null,
+        compte_id bigint not null,
+        primary key (compte_id)
+    )
+Hibernate: 
+    create table comptes_courants (
+        decouvert_autorise float(53) not null,
+        frais_tenue_compte float(53) not null,
+        compte_id bigint not null,
+        primary key (compte_id)
+    )
+23:53:46.839 [com.tp.Main.main()] INFO  o.hibernate.orm.connections.access - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@578f0af] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+23:53:46.845 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    create table comptes_epargnes (
+        plafond_depot float(53) not null,
+        taux_interet float(53) not null,
+        compte_id bigint not null,
+        primary key (compte_id)
+    )
+Hibernate: 
+    create table comptes_epargnes (
+        plafond_depot float(53) not null,
+        taux_interet float(53) not null,
+        compte_id bigint not null,
+        primary key (compte_id)
+    )
+23:53:46.847 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    create table comptes_joined (
+        date_creation date not null,
+        solde float(53) not null,
+        id bigint generated by default as identity,
+        code varchar(30) not null unique,
+        primary key (id)
+    )
+Hibernate: 
+    create table comptes_joined (
+        date_creation date not null,
+        solde float(53) not null,
+        id bigint generated by default as identity,
+        code varchar(30) not null unique,
+        primary key (id)
+    )
+23:53:46.850 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    create table departements (
+        date_creation timestamp(6) not null,
+        id bigint generated by default as identity,
+        code varchar(30) not null unique,
+        cree_par varchar(60),
+        localisation varchar(80),
+        nom varchar(100) not null,
+        primary key (id)
+    )
+Hibernate: 
+    create table departements (
+        date_creation timestamp(6) not null,
+        id bigint generated by default as identity,
+        code varchar(30) not null unique,
+        cree_par varchar(60),
+        localisation varchar(80),
+        nom varchar(100) not null,
+        primary key (id)
+    )
+23:53:46.850 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    create table id_gen_vehicule (
+        gen_val bigint,
+        gen_name varchar(255) not null,
+        primary key (gen_name)
+    )
+Hibernate: 
+    create table id_gen_vehicule (
+        gen_val bigint,
+        gen_name varchar(255) not null,
+        primary key (gen_name)
+    )
+23:53:46.865 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    insert into id_gen_vehicule(gen_name, gen_val) values ('Vehicule',0)
+Hibernate: 
+    insert into id_gen_vehicule(gen_name, gen_val) values ('Vehicule',0)
+23:53:46.869 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    create table motos_table_per_class (
+        cylindree integer not null,
+        prix float(53) not null,
+        id bigint not null,
+        immatriculation varchar(30) not null,
+        type_transmission varchar(30),
+        marque varchar(50) not null,
+        modele varchar(50) not null,
+        primary key (id)
+    )
+Hibernate: 
+    create table motos_table_per_class (
+        cylindree integer not null,
+        prix float(53) not null,
+        id bigint not null,
+        immatriculation varchar(30) not null,
+        type_transmission varchar(30),
+        marque varchar(50) not null,
+        modele varchar(50) not null,
+        primary key (id)
+    )
+23:53:46.871 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    create table personnes_single_table (
+        salaire float(53),
+        id bigint generated by default as identity,
+        cne varchar(30),
+        niveau varchar(30),
+        telephone varchar(30),
+        type_personne varchar(30) not null,
+        filiere varchar(60),
+        nom varchar(60) not null,
+        prenom varchar(60) not null,
+        departement varchar(80),
+        email varchar(100) not null unique,
+        specialite varchar(100),
+        primary key (id)
+    )
+Hibernate: 
+    create table personnes_single_table (
+        salaire float(53),
+        id bigint generated by default as identity,
+        cne varchar(30),
+        niveau varchar(30),
+        telephone varchar(30),
+        type_personne varchar(30) not null,
+        filiere varchar(60),
+        nom varchar(60) not null,
+        prenom varchar(60) not null,
+        departement varchar(80),
+        email varchar(100) not null unique,
+        specialite varchar(100),
+        primary key (id)
+    )
+23:53:46.874 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    create table voitures_table_per_class (
+        climatisee boolean not null,
+        nombre_portes integer not null,
+        prix float(53) not null,
+        puissance_fiscale integer not null,
+        id bigint not null,
+        immatriculation varchar(30) not null,
+        marque varchar(50) not null,
+        modele varchar(50) not null,
+        primary key (id)
+    )
+Hibernate: 
+    create table voitures_table_per_class (
+        climatisee boolean not null,
+        nombre_portes integer not null,
+        prix float(53) not null,
+        puissance_fiscale integer not null,
+        id bigint not null,
+        immatriculation varchar(30) not null,
+        marque varchar(50) not null,
+        modele varchar(50) not null,
+        primary key (id)
+    )
+23:53:46.875 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    alter table if exists comptes_courants 
+       add constraint FK8pd1sliy0dcovg9fda29ea9ju 
+       foreign key (compte_id) 
+       references comptes_joined
+Hibernate: 
+    alter table if exists comptes_courants 
+       add constraint FK8pd1sliy0dcovg9fda29ea9ju 
+       foreign key (compte_id) 
+       references comptes_joined
+23:53:46.890 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    alter table if exists comptes_epargnes 
+       add constraint FK2e16briktyim5mvdr8tkefqtk 
+       foreign key (compte_id) 
+       references comptes_joined
+Hibernate: 
+    alter table if exists comptes_epargnes 
+       add constraint FK2e16briktyim5mvdr8tkefqtk 
+       foreign key (compte_id) 
+       references comptes_joined
+23:53:46.967 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.tp.model.singletable.Etudiant */insert 
+    into
+        personnes_single_table (email, nom, prenom, telephone, cne, filiere, niveau, type_personne, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, 'ETUDIANT', default)
+Hibernate: 
+    /* insert for
+        com.tp.model.singletable.Etudiant */insert 
+    into
+        personnes_single_table (email, nom, prenom, telephone, cne, filiere, niveau, type_personne, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, 'ETUDIANT', default)
+  [PersonneDao] EntitΘ persistΘe : ID=1, Classe=Etudiant
+23:53:47.011 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.tp.model.singletable.Etudiant */insert 
+    into
+        personnes_single_table (email, nom, prenom, telephone, cne, filiere, niveau, type_personne, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, 'ETUDIANT', default)
+Hibernate: 
+    /* insert for
+        com.tp.model.singletable.Etudiant */insert 
+    into
+        personnes_single_table (email, nom, prenom, telephone, cne, filiere, niveau, type_personne, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, 'ETUDIANT', default)
+  [PersonneDao] EntitΘ persistΘe : ID=2, Classe=Etudiant
+23:53:47.016 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.tp.model.singletable.Professeur */insert 
+    into
+        personnes_single_table (email, nom, prenom, telephone, departement, salaire, specialite, type_personne, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, 'PROFESSEUR', default)
+Hibernate: 
+    /* insert for
+        com.tp.model.singletable.Professeur */insert 
+    into
+        personnes_single_table (email, nom, prenom, telephone, departement, salaire, specialite, type_personne, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, 'PROFESSEUR', default)
+  [PersonneDao] EntitΘ persistΘe : ID=3, Classe=Professeur
+23:53:47.018 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.tp.model.singletable.Professeur */insert 
+    into
+        personnes_single_table (email, nom, prenom, telephone, departement, salaire, specialite, type_personne, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, 'PROFESSEUR', default)
+Hibernate: 
+    /* insert for
+        com.tp.model.singletable.Professeur */insert 
+    into
+        personnes_single_table (email, nom, prenom, telephone, departement, salaire, specialite, type_personne, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, 'PROFESSEUR', default)
+  [PersonneDao] EntitΘ persistΘe : ID=4, Classe=Professeur
+
+--- RequΩte Polymorphe (from Personne) : RΘcupΘration de tous les enregistrements ---
+23:53:47.379 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    /* 
+from
+    Personne 
+order by
+    id */ select
+        p1_0.id,
+        p1_0.type_personne,
+        p1_0.email,
+        p1_0.nom,
+        p1_0.prenom,
+        p1_0.telephone,
+        p1_0.cne,
+        p1_0.filiere,
+        p1_0.niveau,
+        p1_0.departement,
+        p1_0.salaire,
+        p1_0.specialite 
+    from
+        personnes_single_table p1_0 
+    order by
+        p1_0.id
+Hibernate: 
+    /* 
+from
+    Personne 
+order by
+    id */ select
+        p1_0.id,
+        p1_0.type_personne,
+        p1_0.email,
+        p1_0.nom,
+        p1_0.prenom,
+        p1_0.telephone,
+        p1_0.cne,
+        p1_0.filiere,
+        p1_0.niveau,
+        p1_0.departement,
+        p1_0.salaire,
+        p1_0.specialite 
+    from
+        personnes_single_table p1_0 
+    order by
+        p1_0.id
++----+----------------------+-----------------------------+-----------------+---------------+-----------------------------------------+
+| ID | Type (Discriminant)  | Nom & PrΘnom                | Email           | CNE / SpΘcial | DΘtail SpΘcifique                       |
++----+----------------------+-----------------------------+-----------------+---------------+-----------------------------------------+
+| 1  | ETUDIANT             | Hamza Rafik                 | hamza.rafik@ensa.ac.ma | CNE-2026-001  | FiliΦre: GΘnie Informatique & IA        |
+| 2  | ETUDIANT             | Sara Bennani                | sara.bennani@ensa.ac.ma | CNE-2026-002  | FiliΦre: Big Data & Cloud Computing     |
+| 3  | PROFESSEUR           | Oumaima Ait Said            | oumaima.aitsaid@toubkalit.com | GΘnie Logiciel & ... | DΘp: DΘpartement Informatique | 2850... |
+| 4  | PROFESSEUR           | Karim El Amrani             | karim.amrani@univ.ac.ma | Intelligence Arti... | DΘp: DΘpartement Math-Info | 31000.0 DH |
++----+----------------------+-----------------------------+-----------------+---------------+-----------------------------------------+
+Total polymorphe : 4 personne(s) stockΘe(s) dans l'unique table 'personnes_single_table'.
+
+--- RequΩtes CiblΘes par Sous-Classe (filtrage automatique sur discriminateur) ---
+23:53:47.392 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    /* 
+from
+    Etudiant 
+order by
+    id */ select
+        e1_0.id,
+        e1_0.email,
+        e1_0.nom,
+        e1_0.prenom,
+        e1_0.telephone,
+        e1_0.cne,
+        e1_0.filiere,
+        e1_0.niveau 
+    from
+        personnes_single_table e1_0 
+    where
+        e1_0.type_personne='ETUDIANT' 
+    order by
+        e1_0.id
+Hibernate: 
+    /* 
+from
+    Etudiant 
+order by
+    id */ select
+        e1_0.id,
+        e1_0.email,
+        e1_0.nom,
+        e1_0.prenom,
+        e1_0.telephone,
+        e1_0.cne,
+        e1_0.filiere,
+        e1_0.niveau 
+    from
+        personnes_single_table e1_0 
+    where
+        e1_0.type_personne='ETUDIANT' 
+    order by
+        e1_0.id
+  > Nombre d'Θtudiants trouvΘs : 2
+    - Hamza Rafik (GΘnie Informatique & IA) | CNE: CNE-2026-001 | Niveau: 4Φme AnnΘe
+    - Sara Bennani (Big Data & Cloud Computing) | CNE: CNE-2026-002 | Niveau: Master 2
+23:53:47.398 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    /* 
+from
+    Professeur 
+order by
+    id */ select
+        p1_0.id,
+        p1_0.email,
+        p1_0.nom,
+        p1_0.prenom,
+        p1_0.telephone,
+        p1_0.departement,
+        p1_0.salaire,
+        p1_0.specialite 
+    from
+        personnes_single_table p1_0 
+    where
+        p1_0.type_personne='PROFESSEUR' 
+    order by
+        p1_0.id
+Hibernate: 
+    /* 
+from
+    Professeur 
+order by
+    id */ select
+        p1_0.id,
+        p1_0.email,
+        p1_0.nom,
+        p1_0.prenom,
+        p1_0.telephone,
+        p1_0.departement,
+        p1_0.salaire,
+        p1_0.specialite 
+    from
+        personnes_single_table p1_0 
+    where
+        p1_0.type_personne='PROFESSEUR' 
+    order by
+        p1_0.id
+  > Nombre de professeurs trouvΘs : 2
+    - Pr. Oumaima Ait Said (GΘnie Logiciel & Architectures JPA/Hibernate) | Salaire: 28500.00 DH
+    - Pr. Karim El Amrani (Intelligence Artificielle & Deep Learning) | Salaire: 31000.00 DH
+
+==========================================================================================
+>>> PARTIE 2 : STRAT╔GIE JOINED (Une table par sous-classe avec clΘ ΘtrangΦre)
+    Tables physiques : 'comptes_joined' (MΦre), 'comptes_courants' (Fille 1), 'comptes_epargnes' (Fille 2)
+==========================================================================================
+23:53:47.412 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.tp.model.joined.CompteCourant */insert 
+    into
+        comptes_joined (code, date_creation, solde, id) 
+    values
+        (?, ?, ?, default)
+Hibernate: 
+    /* insert for
+        com.tp.model.joined.CompteCourant */insert 
+    into
+        comptes_joined (code, date_creation, solde, id) 
+    values
+        (?, ?, ?, default)
+23:53:47.420 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.tp.model.joined.CompteCourant */insert 
+    into
+        comptes_courants (decouvert_autorise, frais_tenue_compte, compte_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    /* insert for
+        com.tp.model.joined.CompteCourant */insert 
+    into
+        comptes_courants (decouvert_autorise, frais_tenue_compte, compte_id) 
+    values
+        (?, ?, ?)
+  [CompteDao] Compte persistΘ : ID=1, Code='CC-5001-MAD', Type=CompteCourant
+23:53:47.423 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.tp.model.joined.CompteCourant */insert 
+    into
+        comptes_joined (code, date_creation, solde, id) 
+    values
+        (?, ?, ?, default)
+Hibernate: 
+    /* insert for
+        com.tp.model.joined.CompteCourant */insert 
+    into
+        comptes_joined (code, date_creation, solde, id) 
+    values
+        (?, ?, ?, default)
+23:53:47.424 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.tp.model.joined.CompteCourant */insert 
+    into
+        comptes_courants (decouvert_autorise, frais_tenue_compte, compte_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    /* insert for
+        com.tp.model.joined.CompteCourant */insert 
+    into
+        comptes_courants (decouvert_autorise, frais_tenue_compte, compte_id) 
+    values
+        (?, ?, ?)
+  [CompteDao] Compte persistΘ : ID=2, Code='CC-5002-EUR', Type=CompteCourant
+23:53:47.425 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.tp.model.joined.CompteEpargne */insert 
+    into
+        comptes_joined (code, date_creation, solde, id) 
+    values
+        (?, ?, ?, default)
+Hibernate: 
+    /* insert for
+        com.tp.model.joined.CompteEpargne */insert 
+    into
+        comptes_joined (code, date_creation, solde, id) 
+    values
+        (?, ?, ?, default)
+23:53:47.426 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.tp.model.joined.CompteEpargne */insert 
+    into
+        comptes_epargnes (plafond_depot, taux_interet, compte_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    /* insert for
+        com.tp.model.joined.CompteEpargne */insert 
+    into
+        comptes_epargnes (plafond_depot, taux_interet, compte_id) 
+    values
+        (?, ?, ?)
+  [CompteDao] Compte persistΘ : ID=3, Code='CE-8001-MAD', Type=CompteEpargne
+23:53:47.427 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.tp.model.joined.CompteEpargne */insert 
+    into
+        comptes_joined (code, date_creation, solde, id) 
+    values
+        (?, ?, ?, default)
+Hibernate: 
+    /* insert for
+        com.tp.model.joined.CompteEpargne */insert 
+    into
+        comptes_joined (code, date_creation, solde, id) 
+    values
+        (?, ?, ?, default)
+23:53:47.427 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.tp.model.joined.CompteEpargne */insert 
+    into
+        comptes_epargnes (plafond_depot, taux_interet, compte_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    /* insert for
+        com.tp.model.joined.CompteEpargne */insert 
+    into
+        comptes_epargnes (plafond_depot, taux_interet, compte_id) 
+    values
+        (?, ?, ?)
+  [CompteDao] Compte persistΘ : ID=4, Code='CE-8002-MAD', Type=CompteEpargne
+
+--- RequΩte Polymorphe (from Compte) : ExΘcution d'un LEFT OUTER JOIN automatique ---
+23:53:47.431 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    /* 
+from
+    Compte 
+order by
+    id */ select
+        c1_0.id,
+        case 
+            when c1_1.compte_id is not null 
+                then 1 
+            when c1_2.compte_id is not null 
+                then 2 
+            when c1_0.id is not null 
+                then 0 
+            end,
+            c1_0.code,
+            c1_0.date_creation,
+            c1_0.solde,
+            c1_1.decouvert_autorise,
+            c1_1.frais_tenue_compte,
+            c1_2.plafond_depot,
+            c1_2.taux_interet 
+        from
+            comptes_joined c1_0 
+        left join
+            comptes_courants c1_1 
+                on c1_0.id=c1_1.compte_id 
+        left join
+            comptes_epargnes c1_2 
+                on c1_0.id=c1_2.compte_id 
+        order by
+            c1_0.id
+Hibernate: 
+    /* 
+from
+    Compte 
+order by
+    id */ select
+        c1_0.id,
+        case 
+            when c1_1.compte_id is not null 
+                then 1 
+            when c1_2.compte_id is not null 
+                then 2 
+            when c1_0.id is not null 
+                then 0 
+            end,
+            c1_0.code,
+            c1_0.date_creation,
+            c1_0.solde,
+            c1_1.decouvert_autorise,
+            c1_1.frais_tenue_compte,
+            c1_2.plafond_depot,
+            c1_2.taux_interet 
+        from
+            comptes_joined c1_0 
+        left join
+            comptes_courants c1_1 
+                on c1_0.id=c1_1.compte_id 
+        left join
+            comptes_epargnes c1_2 
+                on c1_0.id=c1_2.compte_id 
+        order by
+            c1_0.id
++----+---------------+------------------+------------------+-------------------------------------------------+
+| ID | Type Compte   | NumΘro Compte    | Solde Actuel     | CaractΘristiques de la Sous-Classe              |
++----+---------------+------------------+------------------+-------------------------------------------------+
+| 1  | COURANT       | CC-5001-MAD      |      45000.00 DH | DΘcouvert AutorisΘ: 10000.00 DH | Frais: 35.00 DH |
+| 2  | COURANT       | CC-5002-EUR      |      12850.50 DH | DΘcouvert AutorisΘ: 5000.00 DH | Frais: 45.00 DH |
+| 3  | ╔PARGNE       | CE-8001-MAD      |     185000.00 DH | Taux IntΘrΩt: 3.50% | Plafond: 300000.00 DH     |
+| 4  | ╔PARGNE       | CE-8002-MAD      |      92000.00 DH | Taux IntΘrΩt: 4.00% | Plafond: 200000.00 DH     |
++----+---------------+------------------+------------------+-------------------------------------------------+
+23:53:47.518 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    /* select
+        sum(c.solde) 
+    from
+        Compte c */ select
+            sum(c1_0.solde) 
+        from
+            comptes_joined c1_0
+Hibernate: 
+    /* select
+        sum(c.solde) 
+    from
+        Compte c */ select
+            sum(c1_0.solde) 
+        from
+            comptes_joined c1_0
+Total des encours bancaires gΘrΘs : 334850.50 DH sur 4 comptes (rΘpartis sur 3 tables jointes).
+
+==========================================================================================
+>>> PARTIE 3 : STRAT╔GIE TABLE_PER_CLASS (Une table par classe concrΦte)
+    Tables physiques : 'voitures_table_per_class' et 'motos_table_per_class'
+    RΘsolution des requΩtes polymorphes par Hibernate : RequΩte SQL 'UNION ALL'
+==========================================================================================
+23:53:47.535 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    select
+        tbl.gen_val 
+    from
+        id_gen_vehicule tbl 
+    where
+        tbl.gen_name=? for update
+Hibernate: 
+    select
+        tbl.gen_val 
+    from
+        id_gen_vehicule tbl 
+    where
+        tbl.gen_name=? for update
+23:53:47.538 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    update
+        id_gen_vehicule 
+    set
+        gen_val=?  
+    where
+        gen_val=? 
+        and gen_name=?
+Hibernate: 
+    update
+        id_gen_vehicule 
+    set
+        gen_val=?  
+    where
+        gen_val=? 
+        and gen_name=?
+23:53:47.545 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.tp.model.tableperclass.Voiture */insert 
+    into
+        voitures_table_per_class (immatriculation, marque, modele, prix, climatisee, nombre_portes, puissance_fiscale, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    /* insert for
+        com.tp.model.tableperclass.Voiture */insert 
+    into
+        voitures_table_per_class (immatriculation, marque, modele, prix, climatisee, nombre_portes, puissance_fiscale, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+  [VehiculeDao] VΘhicule persistΘ : ID=1, Immat='12345-A-26', Type=Voiture
+23:53:47.550 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    select
+        tbl.gen_val 
+    from
+        id_gen_vehicule tbl 
+    where
+        tbl.gen_name=? for update
+Hibernate: 
+    select
+        tbl.gen_val 
+    from
+        id_gen_vehicule tbl 
+    where
+        tbl.gen_name=? for update
+23:53:47.552 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    update
+        id_gen_vehicule 
+    set
+        gen_val=?  
+    where
+        gen_val=? 
+        and gen_name=?
+Hibernate: 
+    update
+        id_gen_vehicule 
+    set
+        gen_val=?  
+    where
+        gen_val=? 
+        and gen_name=?
+23:53:47.552 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.tp.model.tableperclass.Voiture */insert 
+    into
+        voitures_table_per_class (immatriculation, marque, modele, prix, climatisee, nombre_portes, puissance_fiscale, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    /* insert for
+        com.tp.model.tableperclass.Voiture */insert 
+    into
+        voitures_table_per_class (immatriculation, marque, modele, prix, climatisee, nombre_portes, puissance_fiscale, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+  [VehiculeDao] VΘhicule persistΘ : ID=2, Immat='67890-B-1', Type=Voiture
+23:53:47.556 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    select
+        tbl.gen_val 
+    from
+        id_gen_vehicule tbl 
+    where
+        tbl.gen_name=? for update
+Hibernate: 
+    select
+        tbl.gen_val 
+    from
+        id_gen_vehicule tbl 
+    where
+        tbl.gen_name=? for update
+23:53:47.558 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    update
+        id_gen_vehicule 
+    set
+        gen_val=?  
+    where
+        gen_val=? 
+        and gen_name=?
+Hibernate: 
+    update
+        id_gen_vehicule 
+    set
+        gen_val=?  
+    where
+        gen_val=? 
+        and gen_name=?
+23:53:47.560 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.tp.model.tableperclass.Moto */insert 
+    into
+        motos_table_per_class (immatriculation, marque, modele, prix, cylindree, type_transmission, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    /* insert for
+        com.tp.model.tableperclass.Moto */insert 
+    into
+        motos_table_per_class (immatriculation, marque, modele, prix, cylindree, type_transmission, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+  [VehiculeDao] VΘhicule persistΘ : ID=3, Immat='99881-D-50', Type=Moto
+23:53:47.560 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    select
+        tbl.gen_val 
+    from
+        id_gen_vehicule tbl 
+    where
+        tbl.gen_name=? for update
+Hibernate: 
+    select
+        tbl.gen_val 
+    from
+        id_gen_vehicule tbl 
+    where
+        tbl.gen_name=? for update
+23:53:47.560 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    update
+        id_gen_vehicule 
+    set
+        gen_val=?  
+    where
+        gen_val=? 
+        and gen_name=?
+Hibernate: 
+    update
+        id_gen_vehicule 
+    set
+        gen_val=?  
+    where
+        gen_val=? 
+        and gen_name=?
+23:53:47.564 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.tp.model.tableperclass.Moto */insert 
+    into
+        motos_table_per_class (immatriculation, marque, modele, prix, cylindree, type_transmission, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    /* insert for
+        com.tp.model.tableperclass.Moto */insert 
+    into
+        motos_table_per_class (immatriculation, marque, modele, prix, cylindree, type_transmission, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+  [VehiculeDao] VΘhicule persistΘ : ID=4, Immat='77443-E-12', Type=Moto
+
+--- RequΩte Polymorphe (from Vehicule) : ExΘcution d'un UNION ALL SQL par Hibernate ---
+23:53:47.571 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    /* 
+from
+    Vehicule 
+order by
+    id */ select
+        v1_0.id,
+        v1_0.clazz_,
+        v1_0.immatriculation,
+        v1_0.marque,
+        v1_0.modele,
+        v1_0.prix,
+        v1_0.cylindree,
+        v1_0.type_transmission,
+        v1_0.climatisee,
+        v1_0.nombre_portes,
+        v1_0.puissance_fiscale 
+    from
+        (select
+            climatisee,
+            nombre_portes,
+            prix,
+            puissance_fiscale,
+            id,
+            immatriculation,
+            marque,
+            modele,
+            null as cylindree,
+            null as type_transmission,
+            1 as clazz_ 
+        from
+            voitures_table_per_class 
+        union
+        all select
+            null as climatisee,
+            null as nombre_portes,
+            prix,
+            null as puissance_fiscale,
+            id,
+            immatriculation,
+            marque,
+            modele,
+            cylindree,
+            type_transmission,
+            2 as clazz_ 
+        from
+            motos_table_per_class
+    ) v1_0 
+order by
+    v1_0.id
+Hibernate: 
+    /* 
+from
+    Vehicule 
+order by
+    id */ select
+        v1_0.id,
+        v1_0.clazz_,
+        v1_0.immatriculation,
+        v1_0.marque,
+        v1_0.modele,
+        v1_0.prix,
+        v1_0.cylindree,
+        v1_0.type_transmission,
+        v1_0.climatisee,
+        v1_0.nombre_portes,
+        v1_0.puissance_fiscale 
+    from
+        (select
+            climatisee,
+            nombre_portes,
+            prix,
+            puissance_fiscale,
+            id,
+            immatriculation,
+            marque,
+            modele,
+            null as cylindree,
+            null as type_transmission,
+            1 as clazz_ 
+        from
+            voitures_table_per_class 
+        union
+        all select
+            null as climatisee,
+            null as nombre_portes,
+            prix,
+            null as puissance_fiscale,
+            id,
+            immatriculation,
+            marque,
+            modele,
+            cylindree,
+            type_transmission,
+            2 as clazz_ 
+        from
+            motos_table_per_class
+    ) v1_0 
+order by
+    v1_0.id
++----+------------+------------------+---------------------------+----------------+------------------------------------------+
+| ID | CatΘgorie  | Immatriculation  | Marque & ModΦle           | Prix (DH)      | ParamΦtres Techniques                    |
++----+------------+------------------+---------------------------+----------------+------------------------------------------+
+| 1  | VOITURE    | 12345-A-26       | Mercedes-Benz Classe C 220d |   420000.00 DH | Portes: 5 | Puissance: 8 CV | Clim: OUI  |
+| 2  | VOITURE    | 67890-B-1        | Tesla Model 3 Performance |   530000.00 DH | Portes: 5 | Puissance: 10 CV | Clim: OUI |
+| 3  | MOTO       | 99881-D-50       | Yamaha T-MAX 560 Tech MAX |   145000.00 DH | CylindrΘe: 560 cc | Boεte: Automatique CVT |
+| 4  | MOTO       | 77443-E-12       | BMW R 1250 GS Adventure   |   215000.00 DH | CylindrΘe: 1254 cc | Boεte: Manuelle 6 rapports |
++----+------------+------------------+---------------------------+----------------+------------------------------------------+
+23:53:47.578 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    /* select
+        sum(v.prix) 
+    from
+        Vehicule v */ select
+            sum(v1_0.prix) 
+        from
+            (select
+                climatisee,
+                nombre_portes,
+                prix,
+                puissance_fiscale,
+                id,
+                immatriculation,
+                marque,
+                modele,
+                null as cylindree,
+                null as type_transmission,
+                1 as clazz_ 
+            from
+                voitures_table_per_class 
+            union
+            all select
+                null as climatisee,
+                null as nombre_portes,
+                prix,
+                null as puissance_fiscale,
+                id,
+                immatriculation,
+                marque,
+                modele,
+                cylindree,
+                type_transmission,
+                2 as clazz_ 
+            from
+                motos_table_per_class
+        ) v1_0
+Hibernate: 
+    /* select
+        sum(v.prix) 
+    from
+        Vehicule v */ select
+            sum(v1_0.prix) 
+        from
+            (select
+                climatisee,
+                nombre_portes,
+                prix,
+                puissance_fiscale,
+                id,
+                immatriculation,
+                marque,
+                modele,
+                null as cylindree,
+                null as type_transmission,
+                1 as clazz_ 
+            from
+                voitures_table_per_class 
+            union
+            all select
+                null as climatisee,
+                null as nombre_portes,
+                prix,
+                null as puissance_fiscale,
+                id,
+                immatriculation,
+                marque,
+                modele,
+                cylindree,
+                type_transmission,
+                2 as clazz_ 
+            from
+                motos_table_per_class
+        ) v1_0
+Valeur vΘnale totale du parc : 1310000.00 DH pour 4 vΘhicules rΘpertoriΘs.
+
+==========================================================================================
+>>> PARTIE 4 : CAS PARTICULIER @MappedSuperclass (Factorisation d'Attributs & Audit)
+    Super-classe : 'EntiteAudit' (non-entitΘ, sans table) -> HΘritΘe par 'Departement'
+==========================================================================================
+23:53:47.585 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.tp.model.mapped.Departement */insert 
+    into
+        departements (code, cree_par, date_creation, localisation, nom, id) 
+    values
+        (?, ?, ?, ?, ?, default)
+Hibernate: 
+    /* insert for
+        com.tp.model.mapped.Departement */insert 
+    into
+        departements (code, cree_par, date_creation, localisation, nom, id) 
+    values
+        (?, ?, ?, ?, ?, default)
+  [DepartementDao] DΘpartement crΘΘ : ID=1, Code='DEP-INFO'
+23:53:47.589 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.tp.model.mapped.Departement */insert 
+    into
+        departements (code, cree_par, date_creation, localisation, nom, id) 
+    values
+        (?, ?, ?, ?, ?, default)
+Hibernate: 
+    /* insert for
+        com.tp.model.mapped.Departement */insert 
+    into
+        departements (code, cree_par, date_creation, localisation, nom, id) 
+    values
+        (?, ?, ?, ?, ?, default)
+  [DepartementDao] DΘpartement crΘΘ : ID=2, Code='DEP-DATA'
+23:53:47.593 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    /* 
+from
+    Departement 
+order by
+    id */ select
+        d1_0.id,
+        d1_0.code,
+        d1_0.cree_par,
+        d1_0.date_creation,
+        d1_0.localisation,
+        d1_0.nom 
+    from
+        departements d1_0 
+    order by
+        d1_0.id
+Hibernate: 
+    /* 
+from
+    Departement 
+order by
+    id */ select
+        d1_0.id,
+        d1_0.code,
+        d1_0.cree_par,
+        d1_0.date_creation,
+        d1_0.localisation,
+        d1_0.nom 
+    from
+        departements d1_0 
+    order by
+        d1_0.id
++----+------------+-------------------------------------------------+--------------------------+-----------------------+
+| ID | Code       | Nom du DΘpartement                              | Localisation             | Audit / CrΘΘ par      |
++----+------------+-------------------------------------------------+--------------------------+-----------------------+
+| 1  | DEP-INFO   | GΘnie Informatique & Intelligence Artificielle  | BΓtiment A - 3Φme ╔tage  | Hamza Rafik           |
+| 2  | DEP-DATA   | Sciences des DonnΘes, Cloud & CybersΘcuritΘ     | BΓtiment B - P⌠le Recherche | Oumaima Ait Said      |
++----+------------+-------------------------------------------------+--------------------------+-----------------------+
+
+==========================================================================================
+>>> PARTIE 5 : MATRICE COMPARATIVE DES STRAT╔GIES DE MAPPING D'H╔RITAGE HIBERNATE
+==========================================================================================
++-------------------+-------------------+-------------------+-------------------+-----------------------+
+| CritΦre d'Analyse | SINGLE_TABLE      | JOINED            | TABLE_PER_CLASS   | @MappedSuperclass     |
++-------------------+-------------------+-------------------+-------------------+-----------------------+
+| Nombre de Tables  | 1 unique table    | 1 mΦre + N filles | N tables concrΦtes| N tables filles       |
+| Colonnes NULL     | OUI (Obligatoire) | NON (NormalisΘ)   | NON (NormalisΘ)   | NON                   |
+| Contrainte NOT NULL| Impossible filles | Possible partout  | Possible partout  | Possible partout      |
+| RequΩtes Sous-Cl. | Rapide (WHERE)    | Jointure (JOIN)   | TrΦs rapide (sans)| Directe               |
+| RequΩte Polymorphe| Maximale (SELECT) | Moyenne (L-JOIN)  | Faible (UNION ALL)| Non supportΘe         |
+| ClΘ Primaire      | IDENTITY / AUTO   | IDENTITY / AUTO   | SEQUENCE / TABLE  | Selon les sous-classes|
+| Cas d'Usage IdΘal | HiΘrarchie simple | ModΦle normalisΘ  | Sous-classes isol.| Audit & factorisation |
++-------------------+-------------------+-------------------+-------------------+-----------------------+
+
+==========================================================================================
+ [SUCC╚S] ExΘcution du TP 4 terminΘe avec succΦs sans aucune erreur !
+==========================================================================================
+
+23:53:47.599 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    drop table if exists comptes_courants cascade 
+Hibernate: 
+    drop table if exists comptes_courants cascade 
+23:53:47.600 [com.tp.Main.main()] INFO  o.hibernate.orm.connections.access - HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@126ba019] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+23:53:47.602 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    drop table if exists comptes_epargnes cascade 
+Hibernate: 
+    drop table if exists comptes_epargnes cascade 
+23:53:47.604 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    drop table if exists comptes_joined cascade 
+Hibernate: 
+    drop table if exists comptes_joined cascade 
+23:53:47.604 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    drop table if exists departements cascade 
+Hibernate: 
+    drop table if exists departements cascade 
+23:53:47.604 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    drop table if exists id_gen_vehicule cascade 
+Hibernate: 
+    drop table if exists id_gen_vehicule cascade 
+23:53:47.604 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    drop table if exists motos_table_per_class cascade 
+Hibernate: 
+    drop table if exists motos_table_per_class cascade 
+23:53:47.604 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    drop table if exists personnes_single_table cascade 
+Hibernate: 
+    drop table if exists personnes_single_table cascade 
+23:53:47.604 [com.tp.Main.main()] DEBUG org.hibernate.SQL - 
+    drop table if exists voitures_table_per_class cascade 
+Hibernate: 
+    drop table if exists voitures_table_per_class cascade 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  4.576 s
+[INFO] Finished at: 2026-10-30T23:53:47+01:00
+[INFO] ------------------------------------------------------------------------
